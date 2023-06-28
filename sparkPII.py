@@ -12,6 +12,7 @@ conf = SparkConf().setAppName("PII").setMaster("local[*]")
 sc = SparkContext.getOrCreate(conf)
 
 from framework import *
+from preprocessing import Improved
 
 #import pyspark
 
@@ -143,7 +144,7 @@ class PII:
         unstableRowPairs = []
         unstablePairs = []
         unstablePairsDict = {}
-        #find minimum unstable pir in each row
+        #find minimum unstable pair in each row
         unstableRowPairs = preferenceRDD.map(lambda row : finder(row, currColumnMatching)).collect()
         #select unstable pair with lower RIGHT value if both in same column
         for ii in range(0, len(unstableRowPairs)):
@@ -262,8 +263,14 @@ class PII:
         [rowMatchingLookUp, columnMatchingLookUp] = initialMatching
 
         while (not stable):
-
-            nm1Pairs = PII.findNMI(preferenceRDD, columnMatchingLookUp, preferenceStructure)
+            #nm1Pairs = PII.findNMI(preferenceRDD, columnMatchingLookUp, preferenceStructure)
+            #updates CHANGE BACK
+            if ITER < n:
+                nm1Pairs = PII.findNMI(preferenceRDD, columnMatchingLookUp, preferenceStructure)
+            else:
+                nm1Pairs = Improved.findNMI(preferenceRDD, columnMatchingLookUp, preferenceStructure)
+                if (len(nm1Pairs) <= 0):
+                    nm1Pairs = PII.findNMI(preferenceRDD, columnMatchingLookUp, preferenceStructure)
 
             if (len(nm1Pairs) <= 0):
 
@@ -275,7 +282,6 @@ class PII:
                 [rowMatchingLookUp, columnMatchingLookUp] = PII.updateMatching(rowMatchingLookUp, columnMatchingLookUp, preferenceStructure, nm1Pairs, nm2Pairs)
                 ITER += 1
                 #*****TESTING*****
-                #print("Matching in Algo = " + str(rowMatchingLookUp))
                 if (Detector2.detectCycle(ITER, n, rowMatchingLookUp, preferenceStructure)):
                     Convergence.logIterations(ITER)
                     del preferenceRDD

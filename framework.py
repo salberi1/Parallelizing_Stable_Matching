@@ -10,7 +10,6 @@ class Detector:
 
     def toString(preferenceStructure, n):
         #converts all stored data to human readable string
-        print(Detector.matchingList)
         finalPrintable = "**********************\n"
         ITER = 0
         for matching in Detector.matchingList:
@@ -81,7 +80,6 @@ class Detector2:
         ITER = 0
         for matching in Detector2.matchingList:
             if matching == {0:0}:
-                #print("HERE!")
                 finalPrintable += "~--CYCLE BEGINS--~\n"
             else:
                 matrixPrintable = "Matching [" + str(ITER) + "]:\n"
@@ -101,6 +99,7 @@ class Detector2:
 
     def dump(preferenceStructure, n):
         #writes string to file
+        Convergence.cycles += 1
         string = Detector2.toString(preferenceStructure, n)
         Detector2.pickle.write(string)
 
@@ -124,11 +123,11 @@ class Detector2:
         # print("current matching: " + str(currMatching))
        # print("matching list content = " + str(Detector2.matchingList))
         #test ******
-        if ITER < 3 * n:
+        if ITER < 4 * n:
             Detector2.matchingList.append(copy.deepcopy(currMatching))
             return False
 
-        elif ITER == 3 * n:
+        elif ITER == 4 * n:
             Detector2.matchingList.append(copy.deepcopy({0:0}))
             Detector2.matching = copy.deepcopy(currMatching)
             Detector2.matchingList.append(Detector.matching)
@@ -149,8 +148,7 @@ class Convergence:
     iterationsListRandom = []
     iterationsListGS = []
     iterationsListRC = []
-
-   
+    cycles = 0
 
     def logIterations(iterations):
         if Convergence.Case == 0:
@@ -164,15 +162,19 @@ class Convergence:
         data = Convergence.iterationsListRandom
         data2 = Convergence.iterationsListGS
         data3 = Convergence.iterationsListRC
-        string = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data)) + " Median: " + str(statistics.median(data)) + " Most: " + str(max(data)) + "\n"
-        string2 = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data2)) + " Median: " + str(statistics.median(data2)) + " Most: " + str(max(data2)) + "\n"
-        string3 = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data3)) + " Median: " + str(statistics.median(data3)) + " Most: " + str(max(data3)) + "\n"
+        string = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data)) + " Median: " + str(statistics.median(data)) + " Most: " + str(max(data)) + " Cycles: " + str(Convergence.cycles) + "\n"
+        string2 = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data2)) + " Median: " + str(statistics.median(data2)) + " Most: " + str(max(data2)) + " Cycles: " + str(Convergence.cycles) + "\n"
+        string3 = "[n = " + str(n) + "] Mean: " + str(statistics.mean(data3)) + " Median: " + str(statistics.median(data3)) + " Most: " + str(max(data3)) + " Cycles: " + str(Convergence.cycles) + "\n"
         Convergence.pickle.write(string + string2 + string3)
 
     def reset():
-        iterationsListRandom = []
-        iterationsListGS = []
-        iterationsListRC = []
+        Convergence.iterationsListRandom = []
+        Convergence.iterationsListGS = []
+        Convergence.iterationsListRC = []
+        Convergence.cycles = 0
+
+    def shutdown():
+        Convergence.pickle.close()
 
 
 

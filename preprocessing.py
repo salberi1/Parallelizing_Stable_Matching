@@ -1,5 +1,4 @@
 import random
-from sparkPII import Generator
 
 class Preprocessors:
 
@@ -71,7 +70,6 @@ class Preprocessors:
             jj = indices[1]
             columnMatchingLookUp[jj] = [ii, preferenceStructure[ii][jj][0], preferenceStructure[ii][jj][1]]
             rowMatchingLookUp[ii] = jj
-        print(matching)
         return [rowMatchingLookUp, columnMatchingLookUp]
 
     def nearStableMatching(preferenceStructure, n):
@@ -109,11 +107,61 @@ class Preprocessors:
 
         return
 
-#test
-n = 10
-preferenceStructure = Generator.generatePreference(n)
-[rowMatch, colMatch] = Preprocessors.rowColMin(preferenceStructure, n)
-print("##")
-print(len(colMatch))
-print(colMatch)
+class Improved:
+
+    def findNMI(preferenceRDD, currColumnMatching, preferenceStructure):
+        #finds nm1 pairs and returns as list
+        def finder(row, currColumnMatching):
+            #worker node function. For each row, 
+            #identifies the most minimal unstable pair
+            rowIndex = row[0][2]
+            columnIndex = -1
+            #find the LEFT value of the current pair in the matching
+            for key in currColumnMatching:
+                if currColumnMatching[key][0] == rowIndex:
+                    currLeftValue = currColumnMatching[key][1]
+                    currRightValue = currColumnMatching[key][2]
+                    currSum = currLeftValue + currRightValue
+                    break
+            #for each entry in the row, check if its LEFT value is smaller than the current matching
+            for jj in range(0, len(row)):
+
+                if (row[jj][0] < currLeftValue):
+                    #if it is, check to see if its RIGHT value is smaller than the current matching in that column
+                    if (row[jj][1] < currColumnMatching[jj][2]):
+                        #check to see if the sum of the pair is smaller than the current sum
+                        newSum = row[jj][1] + row[jj][2]
+                        if newSum < currSum:
+                            currLeftValue = row[jj][0]
+                            columnIndex = jj
+
+            return [rowIndex, columnIndex]
+        
+        unstableRowPairs = []
+        unstablePairs = []
+        unstablePairsDict = {}
+        #find minimum unstable pair in each row
+        unstableRowPairs = preferenceRDD.map(lambda row : finder(row, currColumnMatching)).collect()
+        #select unstable pair with lower RIGHT value if both in same column
+        for ii in range(0, len(unstableRowPairs)):
+
+             currColumnIndex = unstableRowPairs[ii][1]
+
+             if currColumnIndex > -1:
+
+                currRowIndex = unstableRowPairs[ii][0]
+                currRightValue = preferenceStructure[currRowIndex][currColumnIndex][1]
+
+                if unstablePairsDict.get(currColumnIndex) == None:
+
+                    unstablePairsDict[currColumnIndex] = [currRowIndex, currRightValue]
+
+                elif  currRightValue < unstablePairsDict[currColumnIndex][1]:
+
+                    unstablePairsDict[currColumnIndex] = [currRowIndex, currRightValue]
+        
+        for key in unstablePairsDict:
+            unstablePairs.append([unstablePairsDict[key][0], key])
+
+        return unstablePairs
 
