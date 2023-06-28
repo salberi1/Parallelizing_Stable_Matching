@@ -220,7 +220,7 @@ class PII:
                     columnEnds.append(currRowIndex)
         rowEnds.sort()
         columnEnds.sort()
-        a = rowEnds.len()
+        a = len(rowEnds)
 
         rowMatchingLookUp = []
         columnMatchingLookUp = []
