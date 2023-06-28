@@ -1,0 +1,6 @@
+[n = 10] Mean: 4.21 Median: 4.0 Most: 42
+[n = 10] Mean: 4.093 Median: 4.0 Most: 42
+[n = 10] Mean: 2.741 Median: 2.0 Most: 38
+[n = 20] Mean: 7.216 Median: 5.0 Most: 73
+[n = 20] Mean: 6.401 Median: 5.0 Most: 74
+[n = 20] Mean: 5.639 Median: 3.0 Most: 76
