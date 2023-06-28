@@ -220,36 +220,40 @@ class PII:
                     columnEnds.append(currRowIndex)
         rowEnds.sort()
         columnEnds.sort()
-        a = rowEnds.len()
+        a = len(rowEnds)
 
-        rowMatchingLookUp = []
-        columnMatchingLookUp = []
+        rowMatchingLookUp = [-1]*a
+        columnMatchingLookUp = [-1]*a
 
         for ii in range(0, a):
             matched = False
             currPreference = 1
             jj = 0
-
+            prefChanged = False
             while(not matched):
 
                 if preferenceStructure[columnEnds[ii]][rowEnds[jj]][0] == currPreference:
 
-                    if columnMatchingLookUp.get(jj) == None:
+                    if columnMatchingLookUp[jj] == -1:
                         matched = True
                         #columnMatchingLookUp[jj] = [ii, preferenceStructure[columnEnds[ii]][rowEnds[jj]][0], preferenceStructure[columnnEnds[ii]][rowEnds[jj]][1]]
                         rowMatchingLookUp[ii] = jj
                         columnMatchingLookUp[jj] = ii
 
                     else:
+                        prefChanged = True
                         currPreference += 1
                 
                 jj += 1
 
                 if jj >= a:
                     jj = 0
+                    if not prefChanged:
+                        currPreference += 1
+                    prefChanged = False
         nm2Pairs = []
         for ii in range(0, a):
-            nm2Pairs.append(columnEnds[ii], rowEnds[rowMatchingLookUp[ii]])
+            nm2Pairs.append([columnEnds[ii], rowEnds[rowMatchingLookUp[ii]]])
         return nm2Pairs
             
     def updateMatching(rowMatchingLookUp, columnMatchingLookUp, preferenceStructure, nm1Pairs, nm2Pairs):
