@@ -1,0 +1,12 @@
+[n = 10] Mean: 4.16 Median: 4.0 Most: 45 Cycles: 6
+[n = 10] Mean: 4.08 Median: 4.0 Most: 48 Cycles: 6
+[n = 10] Mean: 2.688 Median: 2.0 Most: 49 Cycles: 6
+[n = 20] Mean: 10.148 Median: 7.0 Most: 88 Cycles: 22
+[n = 20] Mean: 8.696 Median: 7.0 Most: 89 Cycles: 22
+[n = 20] Mean: 8.784 Median: 5.0 Most: 91 Cycles: 22
+[n = 30] Mean: 15.592 Median: 9.0 Most: 129 Cycles: 42
+[n = 30] Mean: 13.576 Median: 10.0 Most: 131 Cycles: 42
+[n = 30] Mean: 19.588 Median: 8.0 Most: 136 Cycles: 42
+[n = 40] Mean: 34.72 Median: 14.0 Most: 180 Cycles: 80
+[n = 40] Mean: 20.724 Median: 14.0 Most: 176 Cycles: 80
+[n = 40] Mean: 33.46 Median: 10.0 Most: 180 Cycles: 80
