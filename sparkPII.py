@@ -290,12 +290,28 @@ class PII:
             
             nm1Pairs = []
             nm2Pairs = []
+            #*****TESTING*****
+            del preferenceRDD
+            Convergence.logIterations(ITER)
 
-        #*****TESTING*****
-        del preferenceRDD
-        Convergence.logIterations(ITER)
+            return rowMatchingLookUp
 
-        return rowMatchingLookUp
+    def check(graph, iMatches, jMatches, n):
+        stable = True
+        for i in range(n):
+            for j in range(n):
+                if iMatches[i] != j:
+                    if (
+                        graph[i][j][0] < graph[i][iMatches[i]][0]
+                        and graph[i][j][1] < graph[jMatches[j]][j][1]
+                    ):
+                        stable = False
+        if not stable:
+            # print("unstable")
+            pass
+        return stable
+
+
 
             
             
