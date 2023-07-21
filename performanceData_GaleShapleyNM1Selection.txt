@@ -1,3 +1,6 @@
+Line 1 for each n: Normal Initialization, Line 2: GS Initialization, Line 3: Least-Sum Initialization
+Normal NM1 selection, NM2 selection replaced with modified Gale-Shapley
+
 [n = 10] Mean: 4.16 Median: 4.0 Most: 45 Cycles: 6
 [n = 10] Mean: 4.08 Median: 4.0 Most: 48 Cycles: 6
 [n = 10] Mean: 2.688 Median: 2.0 Most: 49 Cycles: 6
