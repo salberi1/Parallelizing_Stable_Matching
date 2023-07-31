@@ -8,7 +8,7 @@
 #If the first pair of one chain is the same as the last pair of another chain, link those two chains together and that will form one nm1-cycle
 #Then once that's complete, choose every other nm1-pair within that cycle and add it to the matching along with the root pairs and that should create a stable matching
 
-from framework import *
+from colinFramework import *
 
 
 class cycleDetection:
