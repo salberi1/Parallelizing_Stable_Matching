@@ -30,12 +30,12 @@ class cycleDetection:
         elif currentMatching != Detector2.matching:                        
             tempnm1pairs = copy.deepcopy(nm1pairs)          #save the nm1pairs sent by the arguments to a temp nm1pair variables, since we'll be modifying (removing) so of the nm1 pairs 
 
-            for i in range (0, len(nm1Chains)):                      #after 3nth and for every subsequent step, add an nm1 pair to an existing chain if it's in the same row or column as any of the last nm1-paris 
-                for j in range (0, len(tempnm1pairs)):
-                    for n in range (0, len(nm1Chains[i])):
-                        if (tempnm1pairs[j][0] == nm1Chains[i][n][0] or tempnm1pairs[j][1] == nm1Chains[i][n][1]) and tempnm1pairs[j] != nm1Chains[i][n]:
-                            nm1Chains[i][n].insert(n+1, tempnm1pairs[j])
-                            tempnm1pairs.pop(j)
+            last = len(nm1Chains)
+        #after 3nth and for every subsequent step, add an nm1 pair to the last existing chain existing chain if it's in the same row or column last,most recent nm1-pariin the chain
+            for j in range (0, len(tempnm1pairs)):
+                if (tempnm1pairs[j][0] == nm1Chains[last-1][len(nm1Chains[last-1])-1][0] or tempnm1pairs[j][1] == nm1Chains[last-1][len(nm1Chains[last-1])-1][1]) and tempnm1pairs[j] != nm1Chains[last-1][len(nm1Chains[last-1]-1]:
+                    nm1Chains[i][n].insert(n+1, tempnm1pairs[j])
+                    tempnm1pairs.pop(j)
 
             if len(tempnm1pairs) > 0:                   #otherwise, create a new chain
                 nm1Chains.append(copy.deepcopy(nm1Chains))
